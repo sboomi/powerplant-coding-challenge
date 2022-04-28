@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "powerplant-api"
+version = "0.1.0"
+description = ""
+authors = ["Shadi Boomi <shadi.boomi@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.scripts]
+run-app = "powerplant_api.run:start"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.75.2"
+uvicorn = { extras = ["standard"], version = "^0.17.6" }
+pydantic = "^1.9.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+mypy = "^0.942"
+black = "^22.3.0"
+flake8 = "^4.0.1"
+isort = "^5.10.1"
+requests = "^2.27.1"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+line_length = 88
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
