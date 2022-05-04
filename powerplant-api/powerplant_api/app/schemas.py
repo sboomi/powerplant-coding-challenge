@@ -1,12 +1,5 @@
-from enum import Enum
-from typing import List
+from typing import List, Literal
 from pydantic import BaseModel, Field
-
-
-class PowerplantType(str, Enum):
-    gasfired = "gasfired"
-    turbojet = "turbojet"
-    windturbine = "windturbine"
 
 
 class Fuels(BaseModel):
@@ -18,7 +11,9 @@ class Fuels(BaseModel):
 
 class Powerplant(BaseModel):
     name: str = Field(..., example="gasfiredbig1", title="Name of the powerplant")
-    type: PowerplantType = Field(..., example="gasfired", title="Type of the powerplant")
+    type: Literal["gasfired", "turbojet", "windturbine"] = Field(
+        ..., example="gasfired", title="Type of the powerplant"
+    )
     efficiency: float = Field(..., example=0.53, title="Fuel-to-energy efficiency conversion")
     pmin: float = Field(..., example=100, title="Maximum amount of generated power")
     pmax: float = Field(..., example=460, title="Minimum amount of generated power")
