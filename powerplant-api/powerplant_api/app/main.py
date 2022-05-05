@@ -3,7 +3,7 @@ from typing import Any, List, Optional
 from fastapi import FastAPI, HTTPException, status
 
 from .schemas import PowerplantDeliveryResponse, PowerplantPayload
-from .energy_ops import compute_power_delivery
+from .energy_management import compute_power_delivery
 
 app = FastAPI(title="Powerplant API")
 
@@ -16,7 +16,11 @@ def read_root():
     return {"message": "Thank you for using powerplant-api!"}
 
 
-@app.post("/productionplan", response_model=List[PowerplantDeliveryResponse], status_code=status.HTTP_200_OK)
+@app.post(
+    "/productionplan",
+    response_model=List[PowerplantDeliveryResponse],
+    status_code=status.HTTP_200_OK,
+)
 def production_plan(pp_payload: PowerplantPayload) -> Any:
     """
     Computes the power needed for each powerplant as a list with the following:

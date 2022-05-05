@@ -1,8 +1,10 @@
 from typing import List
-from .schemas import PowerplantPayload, PowerplantDeliveryResponse, Powerplant, Fuels
+from ..schemas import PowerplantPayload, PowerplantDeliveryResponse, Powerplant, Fuels
 
 
-def get_energy_cost(powerplant: Powerplant, fuels: Fuels, emission_allowances: bool = False) -> float:
+def get_energy_cost(
+    powerplant: Powerplant, fuels: Fuels, emission_allowances: bool = False
+) -> float:
     """Computes energy cost in €/MWh for a powerplant.
 
     Producing power using a turbojet uses kerosine while gasfired plants use
@@ -29,12 +31,16 @@ def get_energy_cost(powerplant: Powerplant, fuels: Fuels, emission_allowances: b
     if powerplant.type == "turbojet":
         return fuels.kerosine / powerplant.efficiency
     if powerplant.type == "gasfired":
-        return (fuels.gas / powerplant.efficiency) + (fuels.co2 * 0.3 if emission_allowances else 0.0)
+        return (fuels.gas / powerplant.efficiency) + (
+            fuels.co2 * 0.3 if emission_allowances else 0.0
+        )
 
     return 0.0
 
 
-def compute_power_delivery(pp_payload: PowerplantPayload, with_co2: bool = False) -> List[PowerplantDeliveryResponse]:
+def compute_power_delivery(
+    pp_payload: PowerplantPayload, with_co2: bool = False
+) -> List[PowerplantDeliveryResponse]:
     """Evaluates power delivery from each powerplant in the payload. The algorithm first evaluates
     which powerplants should be activated according to the merit-order, using energy price from
     `get_energy_cost`. It then deduces the power to use from the load.
@@ -71,7 +77,9 @@ def compute_power_delivery(pp_payload: PowerplantPayload, with_co2: bool = False
     for idx_pplant, p_plant in enumerate(
         sorted(
             pp_payload.powerplants,
-            key=lambda x: get_energy_cost(x, fuels=pp_payload.fuels, emission_allowances=with_co2),
+            key=lambda x: get_energy_cost(
+                x, fuels=pp_payload.fuels, emission_allowances=with_co2
+            ),
         )
     ):
         if remaining_load <= 0:
@@ -82,9 +90,13 @@ def compute_power_delivery(pp_payload: PowerplantPayload, with_co2: bool = False
             else:
                 power_used = min(p_plant.pmax, remaining_load)
                 if (power_used - p_plant.pmin) <= 0:
-                    powerplant_response[idx_pplant - 1].p -= abs(power_used - p_plant.pmin)
+                    powerplant_response[idx_pplant - 1].p -= abs(
+                        power_used - p_plant.pmin
+                    )
                     power_used = p_plant.pmin
         remaining_load -= power_used
-        powerplant_response.append(PowerplantDeliveryResponse(name=p_plant.name, p=round(power_used)))
+        powerplant_response.append(
+            PowerplantDeliveryResponse(name=p_plant.name, p=round(power_used))
+        )
 
     return powerplant_response

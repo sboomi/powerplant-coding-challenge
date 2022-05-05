@@ -1,17 +1,66 @@
-from powerplant_api.app.energy_ops import get_energy_cost, compute_power_delivery
-from powerplant_api.app.schemas import PowerplantPayload, PowerplantDeliveryResponse, Powerplant, Fuels
+from powerplant_api.app.energy_management.energy_ops import (
+    get_energy_cost,
+    compute_power_delivery,
+)
+from powerplant_api.app.schemas import (
+    PowerplantPayload,
+    PowerplantDeliveryResponse,
+    Powerplant,
+    Fuels,
+)
 
 example_payload_1 = PowerplantPayload(
     **{
         "load": 480,
-        "fuels": {"gas(euro/MWh)": 13.4, "kerosine(euro/MWh)": 50.8, "co2(euro/ton)": 20, "wind(%)": 60},
+        "fuels": {
+            "gas(euro/MWh)": 13.4,
+            "kerosine(euro/MWh)": 50.8,
+            "co2(euro/ton)": 20,
+            "wind(%)": 60,
+        },
         "powerplants": [
-            {"name": "gasfiredbig1", "type": "gasfired", "efficiency": 0.53, "pmin": 100, "pmax": 460},
-            {"name": "gasfiredbig2", "type": "gasfired", "efficiency": 0.53, "pmin": 100, "pmax": 460},
-            {"name": "gasfiredsomewhatsmaller", "type": "gasfired", "efficiency": 0.37, "pmin": 40, "pmax": 210},
-            {"name": "tj1", "type": "turbojet", "efficiency": 0.3, "pmin": 0, "pmax": 16},
-            {"name": "windpark1", "type": "windturbine", "efficiency": 1, "pmin": 0, "pmax": 150},
-            {"name": "windpark2", "type": "windturbine", "efficiency": 1, "pmin": 0, "pmax": 36},
+            {
+                "name": "gasfiredbig1",
+                "type": "gasfired",
+                "efficiency": 0.53,
+                "pmin": 100,
+                "pmax": 460,
+            },
+            {
+                "name": "gasfiredbig2",
+                "type": "gasfired",
+                "efficiency": 0.53,
+                "pmin": 100,
+                "pmax": 460,
+            },
+            {
+                "name": "gasfiredsomewhatsmaller",
+                "type": "gasfired",
+                "efficiency": 0.37,
+                "pmin": 40,
+                "pmax": 210,
+            },
+            {
+                "name": "tj1",
+                "type": "turbojet",
+                "efficiency": 0.3,
+                "pmin": 0,
+                "pmax": 16,
+            },
+            {
+                "name": "windpark1",
+                "type": "windturbine",
+                "efficiency": 1,
+                "pmin": 0,
+                "pmax": 150,
+            },
+            {
+                "name": "windpark2",
+                "type": "windturbine",
+                "efficiency": 1,
+                "pmin": 0,
+                "pmax": 36,
+            },
         ],
     }
 )
@@ -19,14 +68,55 @@ example_payload_1 = PowerplantPayload(
 example_payload_2 = PowerplantPayload(
     **{
         "load": 480,
-        "fuels": {"gas(euro/MWh)": 13.4, "kerosine(euro/MWh)": 50.8, "co2(euro/ton)": 20, "wind(%)": 0},
+        "fuels": {
+            "gas(euro/MWh)": 13.4,
+            "kerosine(euro/MWh)": 50.8,
+            "co2(euro/ton)": 20,
+            "wind(%)": 0,
+        },
         "powerplants": [
-            {"name": "gasfiredbig1", "type": "gasfired", "efficiency": 0.53, "pmin": 100, "pmax": 460},
-            {"name": "gasfiredbig2", "type": "gasfired", "efficiency": 0.53, "pmin": 100, "pmax": 460},
-            {"name": "gasfiredsomewhatsmaller", "type": "gasfired", "efficiency": 0.37, "pmin": 40, "pmax": 210},
-            {"name": "tj1", "type": "turbojet", "efficiency": 0.3, "pmin": 0, "pmax": 16},
-            {"name": "windpark1", "type": "windturbine", "efficiency": 1, "pmin": 0, "pmax": 150},
-            {"name": "windpark2", "type": "windturbine", "efficiency": 1, "pmin": 0, "pmax": 36},
+            {
+                "name": "gasfiredbig1",
+                "type": "gasfired",
+                "efficiency": 0.53,
+                "pmin": 100,
+                "pmax": 460,
+            },
+            {
+                "name": "gasfiredbig2",
+                "type": "gasfired",
+                "efficiency": 0.53,
+                "pmin": 100,
+                "pmax": 460,
+            },
+            {
+                "name": "gasfiredsomewhatsmaller",
+                "type": "gasfired",
+                "efficiency": 0.37,
+                "pmin": 40,
+                "pmax": 210,
+            },
+            {
+                "name": "tj1",
+                "type": "turbojet",
+                "efficiency": 0.3,
+                "pmin": 0,
+                "pmax": 16,
+            },
+            {
+                "name": "windpark1",
+                "type": "windturbine",
+                "efficiency": 1,
+                "pmin": 0,
+                "pmax": 150,
+            },
+            {
+                "name": "windpark2",
+                "type": "windturbine",
+                "efficiency": 1,
+                "pmin": 0,
+                "pmax": 36,
+            },
         ],
     }
 )
@@ -34,14 +124,55 @@ example_payload_2 = PowerplantPayload(
 example_payload_3 = PowerplantPayload(
     **{
         "load": 910,
-        "fuels": {"gas(euro/MWh)": 13.4, "kerosine(euro/MWh)": 50.8, "co2(euro/ton)": 20, "wind(%)": 60},
+        "fuels": {
+            "gas(euro/MWh)": 13.4,
+            "kerosine(euro/MWh)": 50.8,
+            "co2(euro/ton)": 20,
+            "wind(%)": 60,
+        },
         "powerplants": [
-            {"name": "gasfiredbig1", "type": "gasfired", "efficiency": 0.53, "pmin": 100, "pmax": 460},
-            {"name": "gasfiredbig2", "type": "gasfired", "efficiency": 0.53, "pmin": 100, "pmax": 460},
-            {"name": "gasfiredsomewhatsmaller", "type": "gasfired", "efficiency": 0.37, "pmin": 40, "pmax": 210},
-            {"name": "tj1", "type": "turbojet", "efficiency": 0.3, "pmin": 0, "pmax": 16},
-            {"name": "windpark1", "type": "windturbine", "efficiency": 1, "pmin": 0, "pmax": 150},
-            {"name": "windpark2", "type": "windturbine", "efficiency": 1, "pmin": 0, "pmax": 36},
+            {
+                "name": "gasfiredbig1",
+                "type": "gasfired",
+                "efficiency": 0.53,
+                "pmin": 100,
+                "pmax": 460,
+            },
+            {
+                "name": "gasfiredbig2",
+                "type": "gasfired",
+                "efficiency": 0.53,
+                "pmin": 100,
+                "pmax": 460,
+            },
+            {
+                "name": "gasfiredsomewhatsmaller",
+                "type": "gasfired",
+                "efficiency": 0.37,
+                "pmin": 40,
+                "pmax": 210,
+            },
+            {
+                "name": "tj1",
+                "type": "turbojet",
+                "efficiency": 0.3,
+                "pmin": 0,
+                "pmax": 16,
+            },
+            {
+                "name": "windpark1",
+                "type": "windturbine",
+                "efficiency": 1,
+                "pmin": 0,
+                "pmax": 150,
+            },
+            {
+                "name": "windpark2",
+                "type": "windturbine",
+                "efficiency": 1,
+                "pmin": 0,
+                "pmax": 36,
+            },
         ],
     }
 )
@@ -63,7 +194,9 @@ def test_simple_generation_cost_gas():
     actual_energy_price = example_fuel_gas / example_efficiency
     expected_energy_price = 12
 
-    assert actual_energy_price == expected_energy_price, f"Expected {expected_energy_price}. Got {actual_energy_price}"
+    assert (
+        actual_energy_price == expected_energy_price
+    ), f"Expected {expected_energy_price}. Got {actual_energy_price}"
 
 
 def test_order_set_of_powerplants_by_energy_cost():
@@ -81,7 +214,9 @@ def test_order_set_of_powerplants_by_energy_cost():
         for p_plant in example_payload_1.powerplants
     ]
 
-    assert expected_result == actual_result, f"Expected {expected_result}. Got {actual_result}"
+    assert (
+        expected_result == actual_result
+    ), f"Expected {expected_result}. Got {actual_result}"
 
 
 def test_order_set_of_powerplants_by_total_cost():
@@ -95,11 +230,21 @@ def test_order_set_of_powerplants_by_total_cost():
     ]
 
     actual_result = [
-        (p_plant.name, round(get_energy_cost(p_plant, example_payload_1.fuels, emission_allowances=True), 2))
+        (
+            p_plant.name,
+            round(
+                get_energy_cost(
+                    p_plant, example_payload_1.fuels, emission_allowances=True
+                ),
+                2,
+            ),
+        )
         for p_plant in example_payload_1.powerplants
     ]
 
-    assert expected_result == actual_result, f"Expected {expected_result}. Got {actual_result}"
+    assert (
+        expected_result == actual_result
+    ), f"Expected {expected_result}. Got {actual_result}"
 
 
 def test_compute_power_delivery_simple_configuration():
@@ -114,8 +259,13 @@ def test_compute_power_delivery_simple_configuration():
 
     actual_result = compute_power_delivery(example_payload_1)
     actual_total_load = sum([p_plant.p for p_plant in actual_result])
-    assert example_payload_1.load == actual_total_load, f"Expected {example_payload_1.load}. Got {actual_total_load}"
-    assert expected_result == actual_result, f"Expected {expected_result}. Got {actual_result}"
+
+    assert (
+        example_payload_1.load == actual_total_load
+    ), f"Expected {example_payload_1.load}. Got {actual_total_load}"
+    assert (
+        expected_result == actual_result
+    ), f"Expected {expected_result}. Got {actual_result}"
 
 
 def test_compute_power_delivery_no_wind():
@@ -130,8 +280,12 @@ def test_compute_power_delivery_no_wind():
 
     actual_result = compute_power_delivery(example_payload_2)
     actual_total_load = sum([p_plant.p for p_plant in actual_result])
-    assert example_payload_2.load == actual_total_load, f"Expected {example_payload_2.load}. Got {actual_total_load}"
-    assert expected_result == actual_result, f"Expected {expected_result}. Got {actual_result}"
+    assert (
+        example_payload_2.load == actual_total_load
+    ), f"Expected {example_payload_2.load}. Got {actual_total_load}"
+    assert (
+        expected_result == actual_result
+    ), f"Expected {expected_result}. Got {actual_result}"
 
 
 def test_compute_power_delivery_big_load():
@@ -146,5 +300,9 @@ def test_compute_power_delivery_big_load():
 
     actual_result = compute_power_delivery(example_payload_3)
     actual_total_load = sum([p_plant.p for p_plant in actual_result])
-    assert example_payload_3.load == actual_total_load, f"Expected {example_payload_3.load}. Got {actual_total_load}"
-    assert expected_result == actual_result, f"Expected {expected_result}. Got {actual_result}"
+    assert (
+        example_payload_3.load == actual_total_load
+    ), f"Expected {example_payload_3.load}. Got {actual_total_load}"
+    assert (
+        expected_result == actual_result
+    ), f"Expected {expected_result}. Got {actual_result}"
