@@ -3,6 +3,7 @@ from typing import Any, List, Optional
 from fastapi import FastAPI, HTTPException, status
 
 from .schemas import PowerplantDeliveryResponse, PowerplantPayload
+from .energy_ops import compute_power_delivery
 
 app = FastAPI(title="Powerplant API")
 
@@ -25,4 +26,5 @@ def production_plan(pp_payload: PowerplantPayload) -> Any:
     \f
     :param PowerplantPayload: Powerplant energy load.
     """
-    return {}
+    power_delivery = compute_power_delivery(pp_payload)
+    return power_delivery

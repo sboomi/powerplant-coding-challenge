@@ -34,24 +34,45 @@ def get_energy_cost(powerplant: Powerplant, fuels: Fuels, emission_allowances: b
     return 0.0
 
 
-def compute_power_delivery(pp_payload: PowerplantPayload) -> List[PowerplantDeliveryResponse]:
-    """Evaluates power delivery from each powerplant in the payload
+def compute_power_delivery(pp_payload: PowerplantPayload, with_co2: bool = False) -> List[PowerplantDeliveryResponse]:
+    """Evaluates power delivery from each powerplant in the payload. The algorithm first evaluates
+    which powerplants should be activated according to the merit-order, using energy price from
+    `get_energy_cost`. It then deduces the power to use from the load.
+
+    For energy-consuming powerplants, the algorithm deduces the power used among the three types of
+    plants available :
+
+    * If the plant is a `windturbine`, the power is immediately deduced from the remaining load with P_max and the
+    percentage of wind available.
+    * If the plant is an energy-consuming one, it will try to exploit the rest of the remaining load
+    according to the power specifications.
+
+    In case the remaining power is inferior to the minimal power allowed to start a powerplant production, the algorithm
+    will take the necessary remainder from the previous plant in the list and add it to the next unit.
+
+    It returns an array of powerplant deliveries with the `name` and the power in `p` MW per hour. The total sum
+    is the initial load of the payload
 
     Parameters
     ----------
     pp_payload : PowerplantPayload
-        _description_
+        Payload object containing the load, the plants and the available fuel + CO2 emission costs
+    with_co2 : bool
+        Option taking account of the CO2 emission calculation.
 
     Returns
     -------
     List[PowerplantDeliveryResponse]
-        _description_
+        List of each powerplant from the payload delivering a power `p`
     """
     powerplant_response: List[PowerplantDeliveryResponse] = []
     remaining_load = pp_payload.load
 
     for idx_pplant, p_plant in enumerate(
-        sorted(pp_payload.powerplants, key=lambda x: get_energy_cost(x, fuels=pp_payload.fuels))
+        sorted(
+            pp_payload.powerplants,
+            key=lambda x: get_energy_cost(x, fuels=pp_payload.fuels, emission_allowances=with_co2),
+        )
     ):
         if remaining_load <= 0:
             power_used = 0.0
