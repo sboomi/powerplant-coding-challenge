@@ -216,3 +216,29 @@ def test_production_plan_big_load():
         {"name": "gasfiredsomewhatsmaller", "p": 0},
         {"name": "tj1", "p": 0},
     ]
+
+
+def test_production_plan_bad_request():
+    response = client.post(
+        "/productionplan",
+        json={
+            "load": 480,
+            "fuels": {
+                "gas(euro/MWh)": 13.4,
+                "kerosine(euro/MWh)": 50.8,
+                "co2(euro/ton)": 20,
+                "wind(%)": 60,
+            },
+            "powerplants": [
+                {
+                    "name": "gasfiredbig1",
+                    "type": "gasfired",
+                    "efficiency": 0.53,
+                    "pmin": 100,
+                    "pmax": 460,
+                }
+            ],
+        },
+    )
+    assert response.status_code == 400
+    assert response.json() == {"detail": "The total must be equal to the load. Add more powerplants."}

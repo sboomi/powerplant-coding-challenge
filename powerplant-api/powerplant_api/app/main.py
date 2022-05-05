@@ -31,4 +31,10 @@ def production_plan(pp_payload: PowerplantPayload) -> Any:
     :param PowerplantPayload: Powerplant energy load.
     """
     power_delivery = compute_power_delivery(pp_payload)
+
+    if sum([power_el.p for power_el in power_delivery]) != pp_payload.load:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="The total must be equal to the load. Add more powerplants."
+        )
+
     return power_delivery
